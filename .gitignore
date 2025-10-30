@@ -1,0 +1,4 @@
+# Directorios de dependencias
+/node_modules
+# MAC OS (Apple Git)
+.DS_Store

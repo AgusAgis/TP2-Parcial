@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Ingreso de Números</title>
+</head>
+<body>
+    <h1>Ingreso de Números (POST /numeros/entrada)</h1>
+    <form id="numeroForm">
+        <label for="numero">Número a ingresar:</label>
+        <input type="number" id="number" name="number" required>
+        <button type="submit">Enviar Número</button>
+    </form>
+    <p id="mensajeResultado"></p>
+
+    <hr>
+    
+    <script>
+        document.getElementById('numeroForm').addEventListener('submit', async function(event) {
+            event.preventDefault();
+            const input = document.getElementById('number');
+            const number = parseFloat(input.value);
+
+            // POST /numeros/entrada espera un JSON { numero: x }
+            const response = await fetch('/numeros/entrada', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({ number: number }) 
+            });
+
+            const resultado = document.getElementById('mensajeResultado');
+            const data = await response.json();
+
+            if (response.ok) {
+                resultado.textContent = `✅ Éxito Número: ${data.number}`;
+                input.value = ''; // Limpiar campo
+            } else {
+                resultado.textContent = `❌ Error: ${data.error || 'Fallo desconocido'}`;
+            }
+        });
+    </script>
+</body>
+</html>
